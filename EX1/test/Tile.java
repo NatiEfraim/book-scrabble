@@ -1,6 +1,5 @@
 package test;
 
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 
@@ -31,13 +30,20 @@ public class Tile {
     public static class Bag {
         private static int[] letterQuantity;
         private static Tile[] availableTiles;
-
+        private static Bag _bagBoard;
 //        // Initialize the availableTiles array with Tile objects for each letter
 //        static {
 //            for (char ch = 'A'; ch <= 'Z'; ch++) {
 //                availableTiles[ch - 'A'] = new Tile(ch, /* Assign score here */);
 //            }
 //        }
+        /////Get bag
+        public static Bag getBag(){
+             if (_bagBoard ==null){
+                 _bagBoard =new Bag();//create a new
+             }
+             return _bagBoard;
+        }
 
         // Private constructor to prevent instantiation
         private Bag() {
@@ -99,6 +105,9 @@ public class Tile {
             this.letterQuantity[24] = 2;
             this.letterQuantity[25] = 1;
         }
+
+        /////get one bag
+
 
         // Public static method to create a Tile with a given letter and score
         public static Tile createTile(char letter, int score) {
