@@ -106,7 +106,7 @@ public class Tile {
             this.letterQuantity[25] = 1;
         }
 
-        /////get one bag
+
 
 
         // Public static method to create a Tile with a given letter and score

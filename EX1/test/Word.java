@@ -30,35 +30,35 @@ public class Word {
 
 
 
-    public Tile[] get_tile() {
-        return _tile;
+    public Tile[] getTile() {
+        return this._tile;
     }
 
-    public void set_tile(Tile[] _tile) {
+    public void setTile(Tile[] _tile) {
         this._tile = _tile;
     }
 
-    public int get_row() {
-        return _row;
+    public int getRow() {
+        return this._row;
     }
 
-    public void set_row(int _row) {
-        this._row = _row;
+    public void setRow(int row) {
+        this._row = row;
     }
 
-    public int get_col() {
-        return _col;
+    public int getCol() {
+        return this._col;
     }
 
-    public void set_col(int _col) {
-        this._col = _col;
+    public void setCol(int col) {
+        this._col = col;
     }
 
-    public boolean is_vertical() {
-        return _vertical;
+    public boolean isVertical() {
+        return this._vertical;
     }
 
-    public void set_vertical(boolean _vertical) {
-        this._vertical = _vertical;
+    public void setVertical(boolean vertical) {
+        this._vertical = vertical;
     }
 }
