@@ -1,5 +1,9 @@
 package test;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Board {
     private static final int BOARD_SIZE = 15;
     private static Board _mainBoard;
@@ -76,6 +80,50 @@ public class Board {
             }
         }
         return true;
+    }
+    public char[][] getTiles()
+    {
+        return Arrays.copyOf(this._boardGame,this._boardGame.length);
+    }
+
+    public boolean dictionaryLegal(Word word){
+        return true;
+    }
+    public ArrayList<Word> getWord(){
+        ArrayList<Word> words=new ArrayList<>();
+
+        return words;
+    }
+    public int tryPlaceWord(Word word){
+        int score=0;
+        if (this.boardLegal(word) && this.dictionaryLegal(word)){
+            ///the word is good
+            if (!word.isVertical()){
+                ////the word is horizontal
+                for (int i = 0; i < word.getTile().length; i++) {
+                    ///assignment each crocheter
+                    this._boardGame[word.getRow()][i+word.getCol()]=word.getTile()[i].letter;
+
+                }
+
+                return getScore(word);
+            } else if (word.isVertical()) {
+                ////the word is Vertical
+                for (int i = 0; i < word.getTile().length; i++) {
+                    ///assignment each crocheter
+                    this._boardGame[i+word.getRow()][word.getCol()]=word.getTile()[i].letter;
+
+                }
+                return getScore(word);
+
+            }
+
+        }
+        return 0;
+    }
+    ////need to implement
+    public int getScore(Word word){
+        return 0;
     }
     //  exercise function
     public static Board getBoard() {

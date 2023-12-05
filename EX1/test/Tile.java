@@ -1,5 +1,7 @@
 package test;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 
@@ -30,7 +32,7 @@ public class Tile {
     public static class Bag {
         private static int[] letterQuantity;
         private static Tile[] availableTiles;
-        private static Bag _bagBoard;
+        private static Bag _bagBoard=null;
 //        // Initialize the availableTiles array with Tile objects for each letter
 //        static {
 //            for (char ch = 'A'; ch <= 'Z'; ch++) {
@@ -177,7 +179,7 @@ public class Tile {
         }
 
         public int[] getQuantities() {
-            return this.letterQuantity;
+            return Arrays.copyOf(this.letterQuantity,this.letterQuantity.length) ;
         }
 
         public void put(Tile tile){
