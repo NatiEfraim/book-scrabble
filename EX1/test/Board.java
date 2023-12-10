@@ -8,15 +8,15 @@ public class Board {
     private static final int BOARD_SIZE = 15;
     private static Board _mainBoard;
     //private Tile.Bag[] _bags;
-    private char[][] _boardGame;
+    private final Tile[][] _boardGame;
 
     /////constructor
-    public Board(){
+    private Board(){
         ///init the board game at first.
-        this._boardGame=new char[BOARD_SIZE][BOARD_SIZE];
+        this._boardGame=new Tile[BOARD_SIZE][BOARD_SIZE];
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
-                this._boardGame[i][j]= 0;
+                this._boardGame[i][j]= null;
             }
         }
     }
@@ -30,33 +30,78 @@ public class Board {
             if (this._boardGame.length-word.getCol() < word.getTile().length){
                 return false;
             }
+
            ///range is good
-            int x=0;
-            for (int i= word.getRow(); i<word.getTile().length ;i++,x++) {
-                if (this._boardGame[word.getRow()][i]!=0 && this._boardGame[word.getRow()][i]!= word.getTile()[x].letter)
-                {
-                        return  false;
+            if (this.isInitBoardGame() && word.getRow()==8) {
+                ////this is the first word in the game
+                for (int i = 0; i < word.getTile().length; i++) {
+                    if ( i+word.getCol()==8) {
+                        return true;
+                    }
                 }
             }
-            return true;
+            int x=0;
+            boolean adjust=false;
+
+            for (int i = 0; i < word.getTile().length; i++) {
+                /////if the new word will be in some word
+                if (word.getTile()[i].letter=='_' && this._boardGame[word.getRow()][i+word.getCol()]!=null) {
+                    adjust=true;
+                }
+                /////if the new word will be in edge word
+                if ( (this._boardGame[word.getRow()+1][word.getCol()+i]!=null) ||(this._boardGame[word.getRow()-1][word.getCol()+i]!=null)) {
+                    adjust=true;
+                }
+            }
+
+            for (int i= 0; i<word.getTile().length && i<this._boardGame.length;i++,x++) {
+                if (this._boardGame[word.getRow()][word.getCol()+i]!=null && word.getTile()[i].letter!='_')
+                {
+                    /////////The location is not allowed
+                    return  false;
+                }
+            }
+            return adjust;
 
         } else if (word.isVertical()) {
             ///the word is located Vertical.
+
             if(this._boardGame.length-word.getRow() < word.getTile().length){
                 return false;
             }
             ///the range is good.
+            if (this.isInitBoardGame() && word.getCol()==8) {
+                ////this is the first word in the game
+                for (int i = 0; i < word.getTile().length; i++) {
+                    if ( i+word.getRow()==8) {
+                        return true;
+                    }
+                }
+            }
+
             int x=0;
-            for (int i= word.getCol(); i<word.getTile().length && i<this._boardGame.length;i++,x++) {
-                if (this._boardGame[i][word.getCol()]!=0 && this._boardGame[i][word.getCol()]!= word.getTile()[x].letter)
+            boolean adjust=false;
+
+            for (int i = 0; i < word.getTile().length; i++) {
+                /////if the new word will be in some word
+                if (word.getTile()[i].letter=='_' && this._boardGame[i+word.getRow()][word.getCol()]!=null) {
+                    adjust=true;
+                }
+                /////if the new word will be in edge word
+                if ( (this._boardGame[i+word.getRow()][word.getCol()+1]!=null) ||(this._boardGame[i+word.getRow()][word.getCol()-1]!=null)) {
+                        adjust=true;
+                }
+            }
+
+            for (int i= 0; i<word.getTile().length && i<this._boardGame.length;i++,x++) {
+                if (this._boardGame[word.getRow()+i][word.getCol()]!=null && word.getTile()[i].letter!='_')
                 {
+                    /////////The location is not allowed
                     return  false;
                 }
             }
-            return true;
+            return adjust;
         }
-        return true;
-        ///return this.checkWord(word.getRow(),word.getCol(),word,word.isVertical());.
     }
 
     private boolean checkWord(int i,int j,Word word,boolean rowOrCol){
@@ -65,7 +110,7 @@ public class Board {
         if (!rowOrCol) {
             ///run on the row.
             for (int k=j; k<this._boardGame.length && x <word.getTile().length; k++,x++){
-                if (this._boardGame[i][j]!=word.getTile()[x].letter)
+                if (this._boardGame[i][j].letter!=word.getTile()[x].letter)
                 {
                     return false;
                 }
@@ -73,7 +118,7 @@ public class Board {
         } else if (rowOrCol) {
             ///run on the col.
             for (int k=i; k<this._boardGame.length && x <word.getTile().length; k++,x++){
-                if (this._boardGame[k][j]!=word.getTile()[x].letter)
+                if (this._boardGame[k][j].letter!=word.getTile()[x].letter)
                 {
                     return false;
                 }
@@ -81,7 +126,7 @@ public class Board {
         }
         return true;
     }
-    public char[][] getTiles()
+    public Tile[][] getTiles()
     {
         return Arrays.copyOf(this._boardGame,this._boardGame.length);
     }
@@ -120,6 +165,18 @@ public class Board {
 
         }
         return 0;
+    }
+    private boolean isInitBoardGame()
+    {
+        for (int i = 0; i < this._boardGame.length; i++) {
+            for (int j = 0; j < this._boardGame.length; j++) {
+                if (this._boardGame[i][j] != null) {
+                    /////board is not empty
+                    return false;
+                }
+            }
+        }
+        return true;
     }
     ////need to implement
     public int getScore(Word word){
